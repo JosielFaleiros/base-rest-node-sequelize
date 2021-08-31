@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+    api:
+        entrypoint: .docker/api/entrypoint.sh
+        build:
+            context: .docker/api/
+            dockerfile: Dockerfile.dev
+        container_name: base-api
+        ports:
+            - 3000:3000
+        environment:
+            DB_FORCE: 'false'
+            DB_HOST: db
+            DB_DIALECT: mysql
+            DB_NAME: test_base
+            DB_USERNAME: root
+            DB_PASSWORD: root
+            # development
+            SEQUELIZE_LOG: 'true'
+            NODE_ENV: development
+            LOG_PAPERTRAIL: 'false'
+
+            REDIS_HOST: redis
+
+
+        volumes:
+            - .:/home/node/app
+        depends_on:
+            - db
+            - redis
+        networks:
+            - base-network
+
+    redis:
+        build:
+            context: .docker/redis/
+            dockerfile: Dockerfile.dev
+        container_name: base-redis
+        ports:
+            - 6379:6379
+        networks:
+            - base-network
+
+    db:
+        image: mysql
+        container_name: base-db-container
+        networks:
+            - base-network
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        volumes:
+            - .docker/mysql/db.sql:/docker-entrypoint-initdb.d/db.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+#            MYSQL_USER: root
+#            MYSQL_PASSWORD: root
+            MYSQL_DATABASE: test_base
+
+    adminer:
+        image: adminer
+        container_name: base-adminer
+        restart: always
+        ports:
+            - 8080:8080
+        networks:
+            - base-network
+
+    redis-commander:
+        container_name: base-redis-commander
+        hostname: redis-commander
+        image: rediscommander/redis-commander:latest
+        restart: always
+        networks:
+            - base-network
+        environment:
+            - REDIS_HOSTS=local:redis:6379
+        ports:
+            - 8081:8081
+
+networks:
+    base-network:
+        driver: bridge
