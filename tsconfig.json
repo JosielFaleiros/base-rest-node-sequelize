@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "lib": ["es6", "dom"],
+    "types": ["reflect-metadata", "node"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+//    "target": "es5",
+    "target": "es2017"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": ["./app/**/*", "./app/*", "./*"]
+}

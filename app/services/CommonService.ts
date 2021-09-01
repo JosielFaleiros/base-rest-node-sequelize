@@ -1,7 +1,12 @@
 import Sequelize from 'sequelize'
+import {FindCountAllDto} from "./dto/FindCountAllDto";
+import {injectable} from "inversify";
 const Op = Sequelize.Op
 
+@injectable()
 export default class CommonService {
+  modelName;
+  models;
   constructor(modelName, models) {
     this.modelName = modelName
     this.models = models
@@ -13,9 +18,9 @@ export default class CommonService {
     return this.models[this.modelName].findOne(options)
   }
 
-  async findAndCountAll(req, options = {
+  async findAndCountAll(req, options :any = {
     where: req.query.id ? { id: req.query.id } : undefined
-  }) {
+  }): Promise<FindCountAllDto> {
     return this.models[this.modelName].findAndCountAll(options)
   }
 
@@ -32,9 +37,10 @@ export default class CommonService {
     return this.models[this.modelName].bulkCreate(objectArr, {...options, individualHooks: true})
   }
 
-  async update(object, req, options = { where: {} }) {
+  async update(object, req, options: { where?: {id?: number}} ) {
     return this.models[this.modelName].update( object, {
-      ...options, where: { ...options.where, id: object.id || options.where.id },
+      ...options,
+      where: { ...options?.where, id: object.id || options?.where?.id },
       individualHooks: true
     })
   }
