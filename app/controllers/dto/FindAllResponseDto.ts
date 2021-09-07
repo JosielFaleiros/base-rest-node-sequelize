@@ -3,4 +3,5 @@ export interface FindAllResponseDto {
     tableOptions: Array<any>;
     totalRecords: number;
     resultCount: Number;
+    count: Number;
 }

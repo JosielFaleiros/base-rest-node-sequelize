@@ -1,13 +1,22 @@
+import {FindAllResponseDto} from "./dto/FindAllResponseDto";
+
 const modelsFn = require('../models')
 import { Op } from 'sequelize'
 import fs from 'fs'
+import { ControllerType } from './dto/ControllerType'
+import {FindCountAllDto} from "../services/dto/FindCountAllDto";
 
-export default class CommonController {
+export default class CommonController implements ControllerType {
+  private models: any;
+  private modelName: any;
+  private service: any;
+  private modelAttrs: any[];
   constructor(ServiceClass, modelAttrs, modelName, optFn = () => {}) {
+  // constructor() {
     this.models = modelsFn()
     this.modelName = modelName
     if (ServiceClass && modelName) {
-      this.service = new ServiceClass(modelName, this.models, optFn(this.models))
+      this.service = new ServiceClass(modelName, this.models, optFn())
     }
     this.modelAttrs = modelAttrs || []
   }
@@ -85,8 +94,8 @@ export default class CommonController {
     return {where, limit, offset, order}
   }
 
-  extractWhere(req) {
-    const { where } = this.treatRequestQuery(req)
+  async extractWhere(req) {
+    const { where } = await this.treatRequestQuery(req)
     return where
   }
 
@@ -96,7 +105,7 @@ export default class CommonController {
       const options = await this.treatRequestQuery(req)
       transaction = await this.models.sequelize.transaction()
 
-      let result = []
+      let result: FindAllResponseDto;
       const tableOptions = await this.tableOptions(transaction)
       result = await this.service.findAllOwn(req, {transaction, ...options})
       await transaction.commit()
@@ -120,7 +129,7 @@ export default class CommonController {
     let transaction
     try {
       let result = []
-      const tableOptions = await this.tableOptions()
+      const tableOptions = await this.tableOptions(undefined)
       // await transaction.commit()
       return res.status(200).send({ tableOptions })
     } catch (e) {
@@ -149,7 +158,7 @@ export default class CommonController {
       const options = await this.treatRequestQuery(req)
       // transaction = await this.models.sequelize.transaction()
 
-      let result = []
+      let result: FindCountAllDto;
       const tableOptions = await this.tableOptions(transaction)
       result = await this.service.findAndCountAll(req, {transaction, ...options})
       // await transaction.commit()

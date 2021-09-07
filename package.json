@@ -25,7 +25,7 @@
     "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.3.5",
-    "sequelize-paper-trail": "^3.0.1"
+    "sequelize-paper-trail": "3.0.1"
   },
   "devDependencies": {
     "@types/node": "^16.7.8",

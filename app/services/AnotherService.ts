@@ -2,8 +2,8 @@ import CommonService from './CommonService'
 import {injectable} from "inversify";
 
 @injectable()
-export default class ExampleService extends CommonService {
+export default class AnotherService extends CommonService {
   constructor() {
-    super('Example')
+    super('Another')
   }
 }
