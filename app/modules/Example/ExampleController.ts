@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import ExampleService from '../../services/ExampleService'
+import ExampleService from './ExampleService'
 import {inject, injectable} from "inversify";
 import TYPES from "../../types/types";
-import {FindAllResponseDto} from "../../controllers/dto/FindAllResponseDto";
-import {FindCountAllDto} from "../../services/dto/FindCountAllDto";
-import {ControllerType} from "../../controllers/dto/ControllerType";
-import {Controller} from "../../decorator/Controller";
-import {Get} from "../../decorator/Get";
+import {FindAllResponseDto} from "../../shared/dto/FindAllResponseDto";
+import {FindCountAllDto} from "../../shared/dto/FindCountAllDto";
+import {ControllerType} from "../../shared/dto/ControllerType";
+import {Controller} from "../../shared/decorator/Controller";
+import {Get} from "../../shared/decorator/Get";
 
 @Controller('/example')
 @injectable()

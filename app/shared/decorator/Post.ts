@@ -1,6 +1,6 @@
-import {RouteDefinition} from "../controllers/dto/RouteDefinition";
+import {RouteDefinition} from "../dto/RouteDefinition";
 
-export const Get = (path: string): MethodDecorator => {
+export const Post = (path: string): MethodDecorator => {
     return (target, propertyKey: string): void => {
         if (! Reflect.hasMetadata('routes', target.constructor)) {
             Reflect.defineMetadata('routes', [], target.constructor);
@@ -9,7 +9,7 @@ export const Get = (path: string): MethodDecorator => {
         const routes = Reflect.getMetadata('routes', target.constructor) as RouteDefinition[];
 
         routes.push({
-            requestMethod: 'get',
+            requestMethod: 'post',
             path,
             methodName: propertyKey
         });

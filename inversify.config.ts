@@ -1,7 +1,7 @@
 import TYPES from './app/types/types';
 import {Container} from 'inversify';
-import ExampleService from "./app/services/ExampleService";
-import AnotherService from "./app/services/AnotherService";
+import ExampleService from "./app/modules/Example/ExampleService";
+import AnotherService from "./app/modules/Another/AnotherService";
 
 const DIContainer = new Container({skipBaseClassChecks: true});
 

@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path';
 import {DataTypes, Dialect, Sequelize} from 'sequelize';
-import Another from '../modules/Another/Another';
-import Example from '../modules/Example/Example';
+import Another from './entities/Another';
+import Example from './entities/Example';
 const basename  = path.basename(__filename)
 
 export class Repository {

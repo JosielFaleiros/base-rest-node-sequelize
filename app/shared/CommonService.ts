@@ -1,6 +1,6 @@
 import {FindCountAllDto} from "./dto/FindCountAllDto";
 import {injectable} from "inversify";
-import {Repository} from "../models";
+import {Repository} from "./Repository";
 
 @injectable()
 export default class CommonService {

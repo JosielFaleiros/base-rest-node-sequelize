@@ -1,4 +1,4 @@
-import {RouteDefinition} from "../controllers/dto/RouteDefinition";
+import {RouteDefinition} from "../dto/RouteDefinition";
 
 export const Put = (path: string): MethodDecorator => {
     return (target, propertyKey: string): void => {

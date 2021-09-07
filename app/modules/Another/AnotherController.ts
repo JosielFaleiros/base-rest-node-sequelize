@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import AnotherService from '../../services/AnotherService'
+import AnotherService from './AnotherService'
 import {inject, injectable} from "inversify";
 import TYPES from "../../types/types";
-import {FindAllResponseDto} from "../../controllers/dto/FindAllResponseDto";
-import {FindCountAllDto} from "../../services/dto/FindCountAllDto";
-import {ControllerType} from "../../controllers/dto/ControllerType";
-import {Controller} from "../../decorator/Controller";
-import {Get} from "../../decorator/Get";
+import {FindAllResponseDto} from "../../shared/dto/FindAllResponseDto";
+import {FindCountAllDto} from "../../shared/dto/FindCountAllDto";
+import {ControllerType} from "../../shared/dto/ControllerType";
+import {Controller} from "../../shared/decorator/Controller";
+import {Get} from "../../shared/decorator/Get";
 
 @Controller('/another')
 @injectable()
@@ -18,7 +18,7 @@ export default class AnotherController implements ControllerType {
     console.log('AnotherController.constructor()');
     // console.log(anotherService)
     this.anotherService = anotherService;
-    const attrs = require('./AnotherAttr')
+    const attrs = require('../../shared/entities/AnotherAttr')
   }
 
   @Get('')

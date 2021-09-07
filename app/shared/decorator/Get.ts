@@ -1,6 +1,6 @@
-import {RouteDefinition} from "../controllers/dto/RouteDefinition";
+import {RouteDefinition} from "../dto/RouteDefinition";
 
-export const Delete = (path: string): MethodDecorator => {
+export const Get = (path: string): MethodDecorator => {
     return (target, propertyKey: string): void => {
         if (! Reflect.hasMetadata('routes', target.constructor)) {
             Reflect.defineMetadata('routes', [], target.constructor);
@@ -9,7 +9,7 @@ export const Delete = (path: string): MethodDecorator => {
         const routes = Reflect.getMetadata('routes', target.constructor) as RouteDefinition[];
 
         routes.push({
-            requestMethod: 'delete',
+            requestMethod: 'get',
             path,
             methodName: propertyKey
         });

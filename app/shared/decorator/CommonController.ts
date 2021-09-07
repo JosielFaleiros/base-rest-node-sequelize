@@ -1,11 +1,12 @@
-import {FindAllResponseDto} from "./dto/FindAllResponseDto";
+import {FindAllResponseDto} from "../dto/FindAllResponseDto";
 
-const modelsFn = require('../models')
+const modelsFn = require('../Repository')
 import { Op } from 'sequelize'
 import fs from 'fs'
-import { ControllerType } from './dto/ControllerType'
-import {FindCountAllDto} from "../services/dto/FindCountAllDto";
+import { ControllerType } from '../dto/ControllerType'
+import {FindCountAllDto} from "../dto/FindCountAllDto";
 
+// todo convert this in decorators
 export default class CommonController implements ControllerType {
   private models: any;
   private modelName: any;

@@ -1,4 +1,4 @@
-import CommonService from './CommonService'
+import CommonService from '../../shared/CommonService'
 import {injectable} from "inversify";
 
 @injectable()
