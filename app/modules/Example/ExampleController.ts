@@ -24,20 +24,17 @@ export default class ExampleController  implements ControllerType {
 
   @Get('')
   async findAndCountAll(req, res, next): Promise<FindAllResponseDto> {
-    let transaction
     try {
-      // const options = await this.treatRequestQuery(req)
+      // todo use decorator for this const options = await this.treatRequestQuery(req)
       const options = {};
-      // transaction = await this.models.sequelize.transaction()
 
       let result:FindCountAllDto
-      // const tableOptions = await this.tableOptions(transaction)
+      // todo think about it, maybe as optional per necessity const tableOptions = await this.tableOptions(transaction)
       const tableOptions = [];
       result = await this.exampleService.findAndCountAll(req, options)
       // await transaction.commit()
       return res.status(200).send({ rows: result?.rows, tableOptions, totalRecords: result?.count, resultCount: result?.rows?.length })
     } catch (e) {
-      if (transaction) await transaction.rollback()
       console.log(e)
       return res.status(400).send(e)
     }
