@@ -1,11 +1,11 @@
 import express from 'express';
-import ExampleController from "./app/modules/Example/ExampleController";
+import ExampleController from "./app/module/Example/ExampleController";
 import {DIContainer} from "./inversify.config";
 import {ControllerType} from "./app/shared/dto/ControllerType";
 import {RouteDefinition} from "./app/shared/dto/RouteDefinition";
 import cors from 'cors';
 import morgan from 'morgan';
-import AnotherController from "./app/modules/Another/AnotherController";
+import AnotherController from "./app/module/Another/AnotherController";
 
 class App {
     public express: any;

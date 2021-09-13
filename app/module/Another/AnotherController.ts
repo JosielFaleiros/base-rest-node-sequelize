@@ -8,8 +8,8 @@ import {ControllerType} from "../../shared/dto/ControllerType";
 import {Controller} from "../../shared/decorator/Controller";
 import {Get} from "../../shared/decorator/Get";
 
-@Controller('/another')
 @injectable()
+@Controller('/another')
 export default class AnotherController implements ControllerType {
   private anotherService: AnotherService;
   constructor(

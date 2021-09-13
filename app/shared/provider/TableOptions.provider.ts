@@ -1,12 +1,20 @@
 import { Op } from 'sequelize'
+import {Repository} from "../Repository";
+import {injectable} from "inversify";
 
-export default {
-  notNull(): ParameterDecorator {
-    return (target: any, propertyKey: string, parameterIndex: number) => {
-      console.log(target, propertyKey, parameterIndex, "param decorator notNull function invoked ");
-      // Validator.registerNotNull(target, propertyKey, parameterIndex);
-    }
-  },
+// todo convert this in decorators
+@injectable()
+export default class TableOptionsProvider {
+  private models: any;
+  private modelName: any;
+  private service: any;
+  private modelAttrs: any[];
+  private repository: any;
+
+  public setTargetRepositoryName(modelName: string) {
+    this.modelName = modelName;
+    this.repository = Repository.getModelRepository(modelName);
+  }
 
   mapAttrType(value, k) {
     if (['id', '_id'].includes(k) && !isNaN(value)) {
@@ -16,7 +24,7 @@ export default {
       return (value === 'true')
     }
     return value
-  },
+  }
 
   async mapOrAttr(value, k) {
     if (typeof value !== 'string') return this.mapAttrType(value, k)
@@ -27,7 +35,7 @@ export default {
     return {
       [Op.or]: await Promise.all(query.map(q => this.mapAttrType(q.trim(), k)))
     }
-  },
+  }
 
   async treatRequestQuery(req, options = {removeNotInTable: true}) {
     let where = {}
@@ -79,5 +87,13 @@ export default {
       limit = perPage
     }
     return {where, limit, offset, order}
+  }
+
+  async tableOptions(transaction) {
+    return []
+    // return this.models.TableManager.findAll({
+    //   where: {table_name: this.models[this.modelName].tableName},
+    //   transaction
+    // })
   }
 }
