@@ -46,16 +46,19 @@ export class Repository {
     })
     PaperTrail.defineModels()
 
-    this.db.Example = new Example().define(this.sequelize, DataTypes);
     this.db.Another = new Another().define(this.sequelize, DataTypes);
+    this.db.Example = new Example().define(this.sequelize, DataTypes);
     this.db.Example.hasPaperTrail()
+
+    this.db.Another.belongsTo(this.db.Example, { foreignKey: 'example_id', as: 'Example' })
+
 
     Object.keys(this.db).forEach(modelName => {
       if (this.db[modelName].associate) {
         this.db[modelName].associate(this.db)
       }
     })
-    this.sequelize.sync({ force: true })
+    this.sequelize.sync({ force: false })
   }
 
   public static getInstance(): Repository {
@@ -64,5 +67,14 @@ export class Repository {
     }
 
     return Repository.instance;
+  }
+
+  static getSequelize() {
+    const repositoryBase = Repository.getInstance();
+    return repositoryBase.getSequelizeInstance();
+  }
+
+  public getSequelizeInstance() {
+    return this.sequelize;
   }
 }

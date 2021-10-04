@@ -7,6 +7,10 @@ import {FindCountAllDto} from "../../shared/dto/FindCountAllDto";
 import {ControllerType} from "../../shared/dto/ControllerType";
 import {Controller} from "../../shared/decorator/Controller";
 import {Get} from "../../shared/decorator/Get";
+import {Post} from "../../shared/decorator/Post";
+import {Put} from "../../shared/decorator/Put";
+import {Delete} from "../../shared/decorator/Delete";
+import { Exception } from "../../shared/decorator/Exception";
 
 @injectable()
 @Controller('/another')
@@ -22,8 +26,7 @@ export default class AnotherController implements ControllerType {
   }
 
   @Get('')
-  async findAndCountAll(req, res, next): Promise<FindAllResponseDto> {
-    let transaction
+  async findAndCountAll(req, res): Promise<FindAllResponseDto> {
     try {
       // const options = await this.treatRequestQuery(req)
       const options = {};
@@ -36,9 +39,39 @@ export default class AnotherController implements ControllerType {
       // await transaction.commit()
       return res.status(200).send({ rows: result?.rows, tableOptions, totalRecords: result?.count, resultCount: result?.rows?.length })
     } catch (e) {
-      if (transaction) await transaction.rollback()
       console.log(e)
       return res.status(400).send(e)
     }
+  }
+
+  @Post('')
+  async create(req, res) {
+    const result = await this.anotherService.create(req.body, req, {});
+    return res.status(200).send(result);
+  }
+
+  @Put('/queue')
+  enqueue(req, res) {
+    const que = this.anotherService.queueProvider.getQueue('asdf3');
+
+    (new Array(1000)).fill(0).map((el, id) => que.add({id: 3, name: `${id} name`}))
+    // que.process(async job => {
+    //   console.log('process job ', job.id, job.data);
+    //   return
+    // })
+    res.status(200).send('ok');
+  }
+
+  @Put('')
+  async update(req, res) {
+    const result = await this.anotherService.update(req.body, req);
+    return res.status(200).send(result);
+  }
+
+  @Delete('/:id')
+  @Exception()
+  async delete(req, res) {
+    const result = await this.anotherService.destroy(req?.params?.id, req.body, req);
+    return res.status(200).send({result});
   }
 }

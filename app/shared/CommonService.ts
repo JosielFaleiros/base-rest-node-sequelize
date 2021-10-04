@@ -1,14 +1,17 @@
 import {FindCountAllDto} from "./dto/FindCountAllDto";
 import {injectable} from "inversify";
 import {Repository} from "./Repository";
+import {Transaction} from "./decorator/Transaction";
 
 @injectable()
 export default class CommonService {
   private modelName: string;
-  private repository;
+  protected repository;
+  protected sequelize: any;
 
   constructor(modelName) {
     this.repository = Repository.getModelRepository(modelName);
+    this.sequelize = Repository.getSequelize();
 
     console.log(`CommonService<${modelName}>.constructor()`);
     this.modelName = modelName
@@ -39,15 +42,16 @@ export default class CommonService {
     return this.repository.bulkCreate(objectArr, {...options, individualHooks: true})
   }
 
-  async update(object, req, options: { where?: {id?: number}} ) {
-    return this.repository.update( object, {
-      ...options,
-      where: { ...options?.where, id: object.id || options?.where?.id },
-      individualHooks: true
-    })
+  async update(object, options: { where?: {id?: number}} ) {
+      const result = await this.repository.update( object, {
+        ...options,
+        where: { ...options?.where, id: object.id || options?.where?.id },
+        individualHooks: true
+      })
+      return result;
   }
 
   async destroy(id, req, options) {
-    return this.repository.destroy({ where: {id: id}, ...options, individualHooks: true })
+    return this.repository.destroy({ where: {id}, ...options, individualHooks: true })
   }
 }

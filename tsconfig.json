@@ -9,6 +9,9 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "allowJs": true,
+
+    "sourceMap": true,
+//    "inlineSourceMap": true,
 //    "target": "es5",
     "target": "es2017"
   },
