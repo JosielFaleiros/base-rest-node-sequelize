@@ -51,6 +51,7 @@ class App {
             });
         });
         this.express.use('/', (req, res) => {
+            console.log(.1 + .2);
             res.json({
                 message: 'hello world'
             });

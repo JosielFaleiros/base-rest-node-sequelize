@@ -1,9 +1,6 @@
 import {FindCountAllDto} from "./dto/FindCountAllDto";
-import {injectable} from "inversify";
 import {Repository} from "./Repository";
-import {Transaction} from "./decorator/Transaction";
 
-@injectable()
 export default class CommonService {
   private modelName: string;
   protected repository;

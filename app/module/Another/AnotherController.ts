@@ -11,6 +11,8 @@ import {Post} from "../../shared/decorator/Post";
 import {Put} from "../../shared/decorator/Put";
 import {Delete} from "../../shared/decorator/Delete";
 import { Exception } from "../../shared/decorator/Exception";
+import {ExtractReqQuery} from "../../shared/decorator/ExtractReqQuery";
+const attrs = require('../../shared/entitie/AnotherAttr')
 
 @injectable()
 @Controller('/another')
@@ -22,11 +24,13 @@ export default class AnotherController implements ControllerType {
     console.log('AnotherController.constructor()');
     // console.log(anotherService)
     this.anotherService = anotherService;
-    const attrs = require('../../shared/entities/AnotherAttr')
   }
 
+  @ExtractReqQuery({modelAttrs: attrs()})
   @Get('')
   async findAndCountAll(req, res): Promise<FindAllResponseDto> {
+    console.log('req.options ', req.options);
+
     try {
       // const options = await this.treatRequestQuery(req)
       const options = {};
